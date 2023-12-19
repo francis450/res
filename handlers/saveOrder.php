@@ -21,10 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order'])) {
 
             $query = "INSERT INTO `orders`(`orderid`, `foodcode`, `food`, `price`, `qnty`) 
                     VALUES ('$orderid','$foodcode','$name','$price','$quantity')";
-            if(!mysqli_query($con, $query)){
+            if (!mysqli_query($con, $query)) {
                 echo "Error Saving Order Item";
-            }else{
-                echo true;
+            } else {
+                file_put_contents('streaming.txt', 'start');
             }
         }
     } else {
@@ -33,7 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order'])) {
     }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+function fetchOrders($con)
+{
     $query = "SELECT `orderid`, GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total` FROM `orders` GROUP BY `orderid`";
     $ordersData = array();
 
@@ -52,15 +53,41 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         // mysqli_close($con);
 
         // Set the response header to indicate JSON content
-        header('Content-Type: application/json');
+        // header('Content-Type: application/json');
 
         // Return the data as JSON
-        echo json_encode($ordersData);
+        return json_encode($ordersData);
     } else {
         // If the query was not successful, handle the error
         echo json_encode(array('error' => 'Query error: ' . mysqli_error($con)));
     }
-} else {
-    // If the request method is not GET, return an error
-    echo json_encode(array('error' => 'Invalid request method'));
 }
+
+function sendServerEvent($con)
+{
+    header("Cache-Control: no-store");
+    header("Content-Type: text/event-stream");
+    header('Connection: keep-alive');
+
+    // Start output buffering
+    ob_start();
+
+    // Send a single "ping" event.
+    echo "event: ping";
+    echo "\n\n";
+
+    // Send the data (assuming fetchOrders returns a string)
+    echo "data: " . fetchOrders($con) . "\n\n";
+
+    // Flush the output buffer and send data to the client
+    ob_flush();
+    flush();
+
+    // End output buffering
+    ob_end_clean();
+
+    // Close the connection explicitly
+    header('Connection: close');
+}
+
+// sendServerEvent($con);

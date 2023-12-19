@@ -7,44 +7,50 @@ if (!isset($_SESSION['username'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- JQuery -->
     <!--<script src="jquery-3.3.1.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+
     <!-- bootstrap -->
     <!--<link rel="stylesheet" href="bs/bootstrap.min.css">-->
     <link rel="stylesheet" href="bootstrap-5.0.2/css/bootstrap.min.css">
-    
+
     <!--<script src="bs/bootstrap.min.js"></script>-->
     <script src="bootstrap-5.0.2/js/bootstrap.min.js"></script>
-    
+
     <!-- DataTables -->
     <link rel="stylesheet" href="DataTables/media/css/jquery.dataTables.min.css">
     <script src="DataTables/media/js/jquery.dataTables.min.js"></script>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
-    
+
     <title>Sell</title>
     <style>
-        #cart_filter{
+        #cart_filter {
             display: none;
         }
-        #cart_length{
+
+        #cart_length {
             display: none;
         }
-        #cart_info{
+
+        #cart_info {
             display: none;
         }
-        #cart_paginate{
-            display:none;
+
+        #cart_paginate {
+            display: none;
         }
+
         .selected {
             background-color: #f0f0f0;
         }
+
         /* Style the tab content */
         .tabcontent {
             display: none;
@@ -52,20 +58,29 @@ if (!isset($_SESSION['username'])) {
             border: 1px solid #ccc;
             border-top: none;
         }
+
         .tabcontent {
-            animation: fadeEffect 1s; /* Fading effect takes 1 second */
+            animation: fadeEffect 1s;
+            /* Fading effect takes 1 second */
         }
 
         /* Go from zero to full opacity */
         @keyframes fadeEffect {
-            from {opacity: 0;}
-            to {opacity: 1;}
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
+
         .item {
             font-size: small;
         }
     </style>
 </head>
+
 <body>
     <div class="main-panel">
         <div class="content-wrapper m-2">
@@ -75,14 +90,15 @@ if (!isset($_SESSION['username'])) {
                         <button class="btn btn-info clear" onClick="cleari()">&#x1F9F9;CLEAR LIST</button>
                         <button class="btn btn-dark btn-outline" id="removeButton">REMOVE ITEM</button>
                         <button class="btn btn-secondary printorder">PRINT ORDER</button>
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal">ORDERS</button>
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                            data-bs-target="#myModal">ORDERS</button>
                     </div>
                 </div>
             </div>
             <div class="row d-flex" style="justify-content:center;gap:20px;">
                 <div class="col-4">
                     <table id="cart" class="table table-stripe table-hover">
-                        
+
                     </table>
                     <button class="btn btn-danger col-12">
                         <!-- <span>Confirm Order For</span> -->
@@ -121,35 +137,39 @@ if (!isset($_SESSION['username'])) {
                             echo '</div>';
                             echo '</div>';
                         }
-                        ?> 
+                        ?>
                     </div>
                 </div>
             </div>
         </div>
         <!-- modals -->
         <!-- ORDERS MODAL -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">ORDERS</h5>
-                <button type="button" class="btn-close close-orders" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <table class="table table-hover table-striped" id="orders">
-                    
-                </table>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">ORDERS</h5>
+                        <button type="button" class="btn-close close-orders" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-hover table-striped" id="orders">
 
-              </div>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        <button class="btn btn-primary d-none paymentModal" data-bs-target="#paymentModal" data-bs-toggle="modal" data-bs-dismiss="modal">button</button>
+        <button class="btn btn-primary d-none paymentModal" data-bs-target="#paymentModal" data-bs-toggle="modal"
+            data-bs-dismiss="modal">button</button>
         <!-- PAYMENT DETAILS MODAL -->
-        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-md modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -164,7 +184,7 @@ if (!isset($_SESSION['username'])) {
                             <div class="card-header">
                                 Payment details for OrderId: <span id="orderIdPlaceholder"></span>
                             </div>
-                            <div class="card-body"> 
+                            <div class="card-body">
                                 <div class="container">
                                     <div class="row" style="justify-content:center">
                                         <div class="form-group" style="display:flex;gap:20px;justify-content:center;">
@@ -173,41 +193,50 @@ if (!isset($_SESSION['username'])) {
                                             <button class="btn btn-lg btn-warning paymentbtn bankbtn">Bank</button>
                                         </div>
                                         <div class="row">
-                                            <div class="form-group col-md-4">	
+                                            <div class="form-group col-md-4">
                                                 <label for="payable">Payable</label>
-                                                <input type="text" class="form-control gottotalprice" id="payable" name="cashpayable" readonly="" required="">
+                                                <input type="text" class="form-control gottotalprice" id="payable"
+                                                    name="cashpayable" readonly="" required="">
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <input type="hidden" name="amt1given" id="amt1given">
                                                 <input type="hidden" name="amt2given" id="amt2given">
                                                 <input type="hidden" name="amt3given" id="amt3given">
                                                 <label class="amountgiventext" for="amountgiven">Amount Paid</label>
-                                                <input type="number" class="form-control amountgiven" id="amountgiven" readonly="" name="cashgiven" required="">
+                                                <input type="number" class="form-control amountgiven" id="amountgiven"
+                                                    readonly="" name="cashgiven" required="">
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label for="bakii">Balance</label>
-                                                <input type="text" class="form-control bakii" id="bakii" name="cashbalance" readonly="" required="">
+                                                <input type="text" class="form-control bakii" id="bakii"
+                                                    name="cashbalance" readonly="" required="">
                                             </div>
                                         </div>
-                                        
+
                                         <div class="row">
                                             <div class="form-group col-md-4">
                                                 <label for="transtype">Transaction type</label>
                                                 <input type="hidden" name="transtype1" id="transtype1">
                                                 <input type="hidden" name="transtype2" id="transtype2">
-                                                <input class="form-control transtype selectbtn" readonly="" id="transtype" readon="" name="transtype">
+                                                <input class="form-control transtype selectbtn" readonly=""
+                                                    id="transtype" readon="" name="transtype">
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label for="discount">Discount</label>
-                                                <input type="number" class="form-control discount" id="discount" name="discount" min="0" max="300" placeholder="Max Discount 300 allowed" required="">
+                                                <input type="number" class="form-control discount" id="discount"
+                                                    name="discount" min="0" max="300"
+                                                    placeholder="Max Discount 300 allowed" required="">
                                             </div>
                                             <div class="form-group col-md-4">
-                                                <label for="transdesc"><span class="tran">Transaction description</span></label>
-                                                <input type="text" class="form-control transdesc" id="transdesc" name="transdesc">
+                                                <label for="transdesc"><span class="tran">Transaction
+                                                        description</span></label>
+                                                <input type="text" class="form-control transdesc" id="transdesc"
+                                                    name="transdesc">
                                             </div>
                                         </div>
                                         <div class="form-group col-md-4" style="display: flex;align-items: end;">
-                                            <button type="submit" class="btn btn-lg btn-warning sellbtn" style="display: none;">Sell</button>
+                                            <button type="submit" class="btn btn-lg btn-warning sellbtn"
+                                                style="display: none;">Sell</button>
                                         </div>
                                         <div class="form-group col-md-4" style="display: flex; align-items: end">
                                         </div>
@@ -218,7 +247,7 @@ if (!isset($_SESSION['username'])) {
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        
+
                     </div>
                 </div>
             </div>
@@ -231,13 +260,13 @@ if (!isset($_SESSION['username'])) {
             updateDataTable();
             updateTotal();
         }
-        function getItems(evt, cityName){
+        function getItems(evt, cityName) {
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
-            
+
             tablinks = document.getElementsByClassName("tablinks");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
@@ -248,7 +277,7 @@ if (!isset($_SESSION['username'])) {
         }
         const dataTable = $('#cart').DataTable({
             columns: [
-                { title: ''},
+                { title: '' },
                 { title: 'Item' },
                 { title: 'Quantity' },
                 { title: 'Price' },
@@ -257,15 +286,15 @@ if (!isset($_SESSION['username'])) {
         });
         const orders = $('#orders').DataTable({
             columns: [
-                {title: 'OrderId'},
-                {title: 'Items'},
-                {title: 'Total'},
-                {title: 'Action'},
+                { title: 'OrderId' },
+                { title: 'Items' },
+                { title: 'Total' },
+                { title: 'Action' },
             ]
         });
-        function populateOrders(){
+        function populateOrders() {
             $.ajax({
-                url: 'handlers/saveOrder.php',
+                url: 'handlers/getOrders.php',
                 method: 'GET',
                 dataType: 'json',
                 success: function (data) {
@@ -291,7 +320,7 @@ if (!isset($_SESSION['username'])) {
         }
         function openPaymentModal(orderId, total) {
             $.ajax({
-                url: 'handlers/payment_details.php', 
+                url: 'handlers/payment_details.php',
                 method: 'GET',
                 data: { orderid: orderId },
                 dataType: 'json',
@@ -325,10 +354,10 @@ if (!isset($_SESSION['username'])) {
                     if (itemIndex !== -1) {
                         target.splice(itemIndex, 1);
                     }
-                    
+
                     // Update cart data in localStorage
                     updateCartInLocalStorage();
-        
+
                     updateDataTable();
                     updateTotal();
                 } else {
@@ -341,7 +370,7 @@ if (!isset($_SESSION['username'])) {
                         target.push(value);
                     }
                     updateCartInLocalStorage();
-        
+
                     updateDataTable();
                     updateTotal();
                 }
@@ -351,11 +380,11 @@ if (!isset($_SESSION['username'])) {
         function updateCartInLocalStorage() {
             localStorage.setItem('cart', JSON.stringify(cart));
         }
-        $(document).ready(function(){
+        $(document).ready(function () {
             initializeCartFromLocalStorage();
             populateOrders();
 
-            $('.paymentbtn').click(function() {
+            $('.paymentbtn').click(function () {
                 var payable = $('#payable').val();
                 var transtype = $(this).text();
                 var amtgiven = prompt("Enter Amount Given");
@@ -363,15 +392,15 @@ if (!isset($_SESSION['username'])) {
                     $('#amountgiven').val(amtgiven);
                     $('#transtype').val(transtype);
                     $('.bakii').val(amtgiven - payable);
-                    if($('.bakii').val() >= 0 && payable > 0){
+                    if ($('.bakii').val() >= 0 && payable > 0) {
                         $('.sellbtn').show();
-                    }else{
+                    } else {
                         $('.sellbtn').hide();
                     }
                 } else {
                     alert("Amount Cannot Be Empty");
                 }
-            });                                                                        
+            });
         });
         function initializeCartFromLocalStorage() {
             const storedCart = localStorage.getItem('cart');
@@ -385,7 +414,7 @@ if (!isset($_SESSION['username'])) {
         function updateDataTable() {
             // Clear the DataTable
             dataTable.clear();
-            
+
             // Populate the DataTable with the updated cart data
             cartProxy.forEach(item => {
                 const { name, quantity, price } = item;
@@ -395,7 +424,7 @@ if (!isset($_SESSION['username'])) {
                     name: name, // Unique name for each checkbox
                     checked: false // You can set it based on some condition
                 });
-                
+
                 const total = quantity * price;
                 dataTable.row.add([checkbox[0].outerHTML, name, quantity, price, total]);
             });
@@ -403,7 +432,7 @@ if (!isset($_SESSION['username'])) {
             // Redraw the DataTable
             dataTable.draw();
         }
-        function updateTotal(){
+        function updateTotal() {
             let total = 0;
             cartProxy.forEach(item => {
                 let additional = item.quantity * item.price;
@@ -429,8 +458,8 @@ if (!isset($_SESSION['username'])) {
                 updateTotal();
             }
         }
-        function add(foodcode, food, price){
-            addToCart({foodcode: foodcode, name: food, quantity: 1, price: price });
+        function add(foodcode, food, price) {
+            addToCart({ foodcode: foodcode, name: food, quantity: 1, price: price });
         }
         function removeItemFromCart(itemName) {
             const itemIndex = cart.findIndex(item => item.name === itemName);
@@ -443,7 +472,7 @@ if (!isset($_SESSION['username'])) {
         function removeSelectedItems() {
             // Get all the checked checkboxes within the table
             var checkedCheckboxes = $('#cart input[type="checkbox"]:checked');
-        
+
             // Check if there are any checked checkboxes
             if (checkedCheckboxes.length > 0) {
                 // Iterate over the checked checkboxes and remove corresponding items from the cart
@@ -463,39 +492,39 @@ if (!isset($_SESSION['username'])) {
             }
         }
         $('#removeButton').on('click', removeSelectedItems);
-        function saveOrder(cartData){
-            $.post('handlers/saveOrder.php',{order: cartData},function(response){
-                if(response){
-                    cleari();
+        function saveOrder(cartData) {
+            $.post('handlers/saveOrder.php', { order: cartData }, function (response) {
+                if (response) {
+                    
                 }
             })
         }
         function generateAndPrintPDF() {
             var cartData = JSON.parse(localStorage.getItem('cart'));
             saveOrder(localStorage.getItem('cart'));
-
+            cleari();
             var subtotal = $('.total').text();
-            cartData.forEach(function(item, index) {
+            cartData.forEach(function (item, index) {
                 item.rowNumber = index + 1;
                 item.total = (item.price * item.quantity).toFixed(2);
             });
             if (cartData && Array.isArray(cartData) && cartData.length > 0) {
                 // Define the custom page size in inches (2.9 inches width)
                 var pageSizeInches = { width: 2.9 * 72, height: 'auto' };
-                cartData.push({ rowNumber: '', name: 'Subtotal', quantity: '', price: '', total: subtotal});
+                cartData.push({ rowNumber: '', name: 'Subtotal', quantity: '', price: '', total: subtotal });
                 var docDefinition = {
                     pageOrientation: 'portrait',
                     pageSize: pageSizeInches,
                     pageMargins: [5, 5, 5, 0],
                     content: [
-                        { text: 'ORDER', style: 'header', alignment: 'center', fontSize: 9},
+                        { text: 'ORDER', style: 'header', alignment: 'center', fontSize: 9 },
                         {
                             layout: 'headerLineOnly',
                             table: {
                                 headerRows: 1,
-                                widths: ['auto','auto', 'auto','auto','auto'],
+                                widths: ['auto', 'auto', 'auto', 'auto', 'auto'],
                                 body: [
-                                    ['#','Item', 'Qnty', 'Price','Total'],
+                                    ['#', 'Item', 'Qnty', 'Price', 'Total'],
                                     ...cartData.map(item => [item.rowNumber, item.name, item.quantity, item.price, item.total])
                                 ]
                             }
@@ -508,7 +537,7 @@ if (!isset($_SESSION['username'])) {
                         }
                     }
                 };
-                
+
                 var pdfDoc = pdfMake.createPdf(docDefinition);
                 pdfDoc.print({}, window);
             } else {
@@ -518,4 +547,5 @@ if (!isset($_SESSION['username'])) {
         $('.printorder').click(generateAndPrintPDF);
     </script>
 </body>
+
 </html>
