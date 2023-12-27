@@ -192,7 +192,7 @@ include('connection.php');
                                                bigunit = (productunits * weight)/1000;
                                            }
                                            
-                                           $.post('register.php',
+                                           $.post('handlers/inventory.php',
                                             {
                                                 psupplier:psupplier,
                                                 product:product,
