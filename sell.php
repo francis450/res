@@ -1,8 +1,11 @@
 <?php
 session_start();
 include('connection.php');
-if (!isset($_SESSION['username'])) {
+if (!isset($_SESSION['username']) && isset($_SESSION['department'])) {
     header('index.php');
+} else {
+    $username = $_SESSION['username'];
+    $department = $_SESSION['department'];
 }
 ?>
 <!DOCTYPE html>
@@ -90,8 +93,7 @@ if (!isset($_SESSION['username'])) {
                         <button class="btn btn-info clear" onClick="cleari()">&#x1F9F9;CLEAR LIST</button>
                         <button class="btn btn-dark btn-outline" id="removeButton">REMOVE ITEM</button>
                         <button class="btn btn-secondary printorder">PRINT ORDER</button>
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal"
-                            data-bs-target="#myModal">ORDERS</button>
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal">ORDERS</button>
                     </div>
                 </div>
             </div>
@@ -111,7 +113,7 @@ if (!isset($_SESSION['username'])) {
                     <h5>SELECT CATEGORY</h5>
                     <div class="categories d-flex" style="gap:10px; flex-direction:column">
                         <?php
-                        $catquery = "SELECT DISTINCT(category) FROM menu";
+                        $catquery = "SELECT DISTINCT(category) FROM menu WHERE department = '$department'";
                         $allcategories = mysqli_query($con, $catquery);
                         while ($categories = mysqli_fetch_array($allcategories)) {
                             echo '<button data-bs-toggle="tab" type="button" onclick="getItems(event,\'' . $categories['category'] . '\')" class="btn btn-lg btn-success btn-outline" style="width:100%">' . $categories['category'] . '</button>';
@@ -144,14 +146,12 @@ if (!isset($_SESSION['username'])) {
         </div>
         <!-- modals -->
         <!-- ORDERS MODAL -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">ORDERS</h5>
-                        <button type="button" class="btn-close close-orders" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close close-orders" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <table class="table table-hover table-striped" id="orders">
@@ -165,11 +165,9 @@ if (!isset($_SESSION['username'])) {
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary d-none paymentModal" data-bs-target="#paymentModal" data-bs-toggle="modal"
-            data-bs-dismiss="modal">button</button>
+        <button class="btn btn-primary d-none paymentModal" data-bs-target="#paymentModal" data-bs-toggle="modal" data-bs-dismiss="modal">button</button>
         <!-- PAYMENT DETAILS MODAL -->
-        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-md modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -195,21 +193,18 @@ if (!isset($_SESSION['username'])) {
                                         <div class="row">
                                             <div class="form-group col-md-4">
                                                 <label for="payable">Payable</label>
-                                                <input type="text" class="form-control gottotalprice" id="payable"
-                                                    name="cashpayable" readonly="" required="">
+                                                <input type="text" class="form-control gottotalprice" id="payable" name="cashpayable" readonly="" required="">
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <input type="hidden" name="amt1given" id="amt1given">
                                                 <input type="hidden" name="amt2given" id="amt2given">
                                                 <input type="hidden" name="amt3given" id="amt3given">
                                                 <label class="amountgiventext" for="amountgiven">Amount Paid</label>
-                                                <input type="number" class="form-control amountgiven" id="amountgiven"
-                                                    readonly="" name="cashgiven" required="">
+                                                <input type="number" class="form-control amountgiven" id="amountgiven" readonly="" name="cashgiven" required="">
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label for="bakii">Balance</label>
-                                                <input type="text" class="form-control bakii" id="bakii"
-                                                    name="cashbalance" readonly="" required="">
+                                                <input type="text" class="form-control bakii" id="bakii" name="cashbalance" readonly="" required="">
                                             </div>
                                         </div>
 
@@ -218,25 +213,20 @@ if (!isset($_SESSION['username'])) {
                                                 <label for="transtype">Transaction type</label>
                                                 <input type="hidden" name="transtype1" id="transtype1">
                                                 <input type="hidden" name="transtype2" id="transtype2">
-                                                <input class="form-control transtype selectbtn" readonly=""
-                                                    id="transtype" readon="" name="transtype">
+                                                <input class="form-control transtype selectbtn" readonly="" id="transtype" readon="" name="transtype">
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label for="discount">Discount</label>
-                                                <input type="number" class="form-control discount" id="discount"
-                                                    name="discount" min="0" max="300"
-                                                    placeholder="Max Discount 300 allowed" required="">
+                                                <input type="number" class="form-control discount" id="discount" name="discount" min="0" max="300" placeholder="Max Discount 300 allowed" required="">
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label for="transdesc"><span class="tran">Transaction
                                                         description</span></label>
-                                                <input type="text" class="form-control transdesc" id="transdesc"
-                                                    name="transdesc">
+                                                <input type="text" class="form-control transdesc" id="transdesc" name="transdesc">
                                             </div>
                                         </div>
                                         <div class="form-group col-md-4" style="display: flex;align-items: end;">
-                                            <button type="submit" class="btn btn-lg btn-warning sellbtn"
-                                                style="display: none;">Sell</button>
+                                            <button type="submit" class="btn btn-lg btn-warning sellbtn" style="display: none;">Sell</button>
                                         </div>
                                         <div class="form-group col-md-4" style="display: flex; align-items: end">
                                         </div>
@@ -260,6 +250,7 @@ if (!isset($_SESSION['username'])) {
             updateDataTable();
             updateTotal();
         }
+
         function getItems(evt, cityName) {
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tabcontent");
@@ -276,28 +267,45 @@ if (!isset($_SESSION['username'])) {
             evt.currentTarget.className += " active";
         }
         const dataTable = $('#cart').DataTable({
-            columns: [
-                { title: '' },
-                { title: 'Item' },
-                { title: 'Quantity' },
-                { title: 'Price' },
-                { title: 'Total' },
+            columns: [{
+                    title: ''
+                },
+                {
+                    title: 'Item'
+                },
+                {
+                    title: 'Quantity'
+                },
+                {
+                    title: 'Price'
+                },
+                {
+                    title: 'Total'
+                },
             ],
         });
         const orders = $('#orders').DataTable({
-            columns: [
-                { title: 'OrderId' },
-                { title: 'Items' },
-                { title: 'Total' },
-                { title: 'Action' },
+            columns: [{
+                    title: 'OrderId'
+                },
+                {
+                    title: 'Items'
+                },
+                {
+                    title: 'Total'
+                },
+                {
+                    title: 'Action'
+                },
             ]
         });
+
         function populateOrders() {
             $.ajax({
                 url: 'handlers/getOrders.php',
                 method: 'GET',
                 dataType: 'json',
-                success: function (data) {
+                success: function(data) {
                     // Assuming the data is an array of objects with properties like OrderId, Items, Total
 
                     // Clear existing rows in the DataTable
@@ -313,18 +321,21 @@ if (!isset($_SESSION['username'])) {
                         ]).draw();
                     }
                 },
-                error: function (error) {
+                error: function(error) {
                     console.error('Error fetching data:', error);
                 }
             });
         }
+
         function openPaymentModal(orderId, total) {
             $.ajax({
                 url: 'handlers/payment_details.php',
                 method: 'GET',
-                data: { orderid: orderId },
+                data: {
+                    orderid: orderId
+                },
                 dataType: 'json',
-                success: function (paymentDetails) {
+                success: function(paymentDetails) {
                     // Populate modal content with payment details
                     $('#orderIdPlaceholder').text(orderId);
                     $('#payable').val(total);
@@ -334,14 +345,14 @@ if (!isset($_SESSION['username'])) {
                     $('.close-orders').click();
                     $('.paymentModal').click();
                 },
-                error: function (error) {
+                error: function(error) {
                     console.error('Error fetching payment details:', error);
                 }
             });
         }
         const cart = [];
         const cartProxy = new Proxy(cart, {
-            set: function (target, property, value) {
+            set: function(target, property, value) {
                 // Intercept array changes here
                 if (property === 'length') {
                     // Handle array length changes (e.g., push, splice)
@@ -377,14 +388,15 @@ if (!isset($_SESSION['username'])) {
                 return true;
             },
         });
+
         function updateCartInLocalStorage() {
             localStorage.setItem('cart', JSON.stringify(cart));
         }
-        $(document).ready(function () {
+        $(document).ready(function() {
             initializeCartFromLocalStorage();
             populateOrders();
 
-            $('.paymentbtn').click(function () {
+            $('.paymentbtn').click(function() {
                 var payable = $('#payable').val();
                 var transtype = $(this).text();
                 var amtgiven = prompt("Enter Amount Given");
@@ -402,6 +414,7 @@ if (!isset($_SESSION['username'])) {
                 }
             });
         });
+
         function initializeCartFromLocalStorage() {
             const storedCart = localStorage.getItem('cart');
             if (storedCart) {
@@ -411,13 +424,18 @@ if (!isset($_SESSION['username'])) {
                 updateTotal();
             }
         }
+
         function updateDataTable() {
             // Clear the DataTable
             dataTable.clear();
 
             // Populate the DataTable with the updated cart data
             cartProxy.forEach(item => {
-                const { name, quantity, price } = item;
+                const {
+                    name,
+                    quantity,
+                    price
+                } = item;
                 const checkbox = $('<input>').prop({
                     type: 'checkbox',
                     id: name, // Unique ID for each checkbox
@@ -432,6 +450,7 @@ if (!isset($_SESSION['username'])) {
             // Redraw the DataTable
             dataTable.draw();
         }
+
         function updateTotal() {
             let total = 0;
             cartProxy.forEach(item => {
@@ -440,6 +459,7 @@ if (!isset($_SESSION['username'])) {
             });
             $('.total').html(total);
         }
+
         function addToCart(item, updateUI = true) {
             // Check if the item already exists in the cart
             const existingItem = cartProxy.find(cartItem => cartItem.name === item.name);
@@ -458,9 +478,16 @@ if (!isset($_SESSION['username'])) {
                 updateTotal();
             }
         }
-        function add(foodcode, food, price) {
-            addToCart({ foodcode: foodcode, name: food, quantity: 1, price: price });
+
+        function add(foodcode, food, price,) {
+            addToCart({
+                foodcode: foodcode,
+                name: food,
+                quantity: 1,
+                price: price
+            });
         }
+
         function removeItemFromCart(itemName) {
             const itemIndex = cart.findIndex(item => item.name === itemName);
             if (itemIndex !== -1) {
@@ -469,6 +496,7 @@ if (!isset($_SESSION['username'])) {
             }
             return false; // Item not found in the cart
         }
+
         function removeSelectedItems() {
             // Get all the checked checkboxes within the table
             var checkedCheckboxes = $('#cart input[type="checkbox"]:checked');
@@ -476,7 +504,7 @@ if (!isset($_SESSION['username'])) {
             // Check if there are any checked checkboxes
             if (checkedCheckboxes.length > 0) {
                 // Iterate over the checked checkboxes and remove corresponding items from the cart
-                checkedCheckboxes.each(function () {
+                checkedCheckboxes.each(function() {
                     var itemName = $(this).attr('name'); // Assuming you store the item name as a data attribute
                     var removed = removeItemFromCart(itemName); // Remove the item from the cart
                     if (removed) {
@@ -492,32 +520,50 @@ if (!isset($_SESSION['username'])) {
             }
         }
         $('#removeButton').on('click', removeSelectedItems);
+
         function saveOrder(cartData) {
-            $.post('handlers/saveOrder.php', { order: cartData }, function (response) {
+            $.post('handlers/saveOrder.php', {
+                order: cartData,
+                department: '<?php echo $department; ?>'
+            }, function(response) {
                 if (response) {
-                    
+
                 }
             })
         }
+
         function generateAndPrintPDF() {
             var cartData = JSON.parse(localStorage.getItem('cart'));
             saveOrder(localStorage.getItem('cart'));
             cleari();
             var subtotal = $('.total').text();
-            cartData.forEach(function (item, index) {
+            cartData.forEach(function(item, index) {
                 item.rowNumber = index + 1;
                 item.total = (item.price * item.quantity).toFixed(2);
             });
             if (cartData && Array.isArray(cartData) && cartData.length > 0) {
                 // Define the custom page size in inches (2.9 inches width)
-                var pageSizeInches = { width: 2.9 * 72, height: 'auto' };
-                cartData.push({ rowNumber: '', name: 'Subtotal', quantity: '', price: '', total: subtotal });
+                var pageSizeInches = {
+                    width: 2.9 * 72,
+                    height: 'auto'
+                };
+                cartData.push({
+                    rowNumber: '',
+                    name: 'Subtotal',
+                    quantity: '',
+                    price: '',
+                    total: subtotal
+                });
                 var docDefinition = {
                     pageOrientation: 'portrait',
                     pageSize: pageSizeInches,
                     pageMargins: [5, 5, 5, 0],
-                    content: [
-                        { text: 'ORDER', style: 'header', alignment: 'center', fontSize: 9 },
+                    content: [{
+                            text: 'ORDER',
+                            style: 'header',
+                            alignment: 'center',
+                            fontSize: 9
+                        },
                         {
                             layout: 'headerLineOnly',
                             table: {
