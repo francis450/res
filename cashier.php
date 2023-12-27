@@ -137,7 +137,7 @@ include('connection.php');
         <div class="modal-dialog modal-dialog-md modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header card-header">
-                    <h5 class="modal-title" id="paymentModalLabel">CANCEL ORDER <span class="orderNumber"></span></h5>
+                    <h5 class="modal-title" id="paymentModalLabel"><span id="cancelText">    </span>ORDER NO: <span class="orderNumber"></span><span class="viewDetails"></span></h5>
                     <button type="button" class="btn-close closeDelete" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
@@ -156,6 +156,9 @@ include('connection.php');
                         </tbody>
                     </table>
                 </div>
+                <div class="card">
+                    <textarea name="reason" id="reason" cols="30" rows="3" placeholder="Reason For Cancellng Order"></textarea>
+                </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary confirmed">CONFIRM</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -173,7 +176,7 @@ include('connection.php');
 
             <!-- Modal content-->
             <div class="modal-content">
-                <a class="close" href="#" data-dismiss="modal">&times;</a>
+                <a class="close" href="#" data-bs-dismiss="modal">&times;</a>
                 <div class="page-body">
                     <div class="head">
                         <h3 style="margin-top:5px;" class="sucesssMessage"></h3>
