@@ -4,6 +4,7 @@ include('../connection.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order'])) {
     $order = $_POST['order'];
+    $department = $_POST['department'];
     // Decode the JSON string
     $foodItems = json_decode($order, true);
     $currentDateTime = new DateTime();
@@ -19,8 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order'])) {
             $quantity = $item['quantity'];
             $price = $item['price'];
 
-            $query = "INSERT INTO `orders`(`orderid`, `foodcode`, `food`, `price`, `qnty`) 
-                    VALUES ('$orderid','$foodcode','$name','$price','$quantity')";
+            $query = "INSERT INTO `orders`(`orderid`,`department`, `foodcode`, `food`, `price`, `qnty`) 
+                    VALUES ('$orderid','$department','$foodcode','$name','$price','$quantity')";
             if (!mysqli_query($con, $query)) {
                 echo "Error Saving Order Item";
             } else {
@@ -35,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order'])) {
 
 function fetchOrders($con)
 {
-    $query = "SELECT `orderid`, GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total` FROM `orders` GROUP BY `orderid`";
+    $query = "SELECT `orderid`,department GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total` FROM `orders` GROUP BY `orderid`";
     $ordersData = array();
 
     // Check if the query was successful

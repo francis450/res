@@ -15,11 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $timed = date('H:i:s');
 
     // Prepare a statement to insert into receipts
-    $stmt = $con->prepare("INSERT INTO `receipts`(`receipt`, `amount`, `payable`, `balance`, `transtype`, `dated`, `cashier`, `timed`) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $con->prepare("INSERT INTO `receipts`(`receipt`, `amount`, `payable`, `balance`, `transtype`, `dated`, `cashier`) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)");
 
     // Bind the parameters to the statement
-    $stmt->bind_param("sdddssss", $orderId, $amtGiven, $payable, $bakii, $transtype, $dated, $cashier, $timed);
+    $stmt->bind_param("sdddsss", $orderId, $amtGiven, $payable, $bakii, $transtype, $dated, $cashier);
 
     // Execute the statement
     if ($stmt->execute()) {

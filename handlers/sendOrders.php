@@ -3,7 +3,7 @@ session_start();
 include('../connection.php');
 function fetchOrders($con)
 {
-    $query = "SELECT `orderid`, GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total`, orderedAt as `date` FROM `orders` GROUP BY `orderid` ORDER BY date DESC";
+    $query = "SELECT `orderid`,`department`, GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total`, orderedAt as `date` FROM `orders` GROUP BY `orderid` ORDER BY date DESC";
     $ordersData = array();
 
     // Check if the query was successful
@@ -44,7 +44,7 @@ function sendServerEvent($con)
     ob_end_clean();
 
     // Close the connection explicitly
-    header('Connection: close');
+    // header('Connection: close');
 }
 $marker = file_get_contents('streaming.txt');
 

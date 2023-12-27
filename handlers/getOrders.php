@@ -4,7 +4,7 @@ include('../connection.php');
 
 function fetchOrders($con)
 {
-    $query = "SELECT `orderid`, GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total`, orderedAt as `date` FROM `orders` GROUP BY `orderid` ORDER BY orderid DESC";
+    $query = "SELECT `orderid`, `department`, GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total`, orderedAt as `date` FROM `orders` GROUP BY `orderid` ORDER BY orderid DESC";
     $ordersData = array();
 
     // Check if the query was successful
