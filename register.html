@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <!-- saved from url=(0083)https://demo.bootstrapdash.com/majestic-free/template/pages/samples/register-2.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <!-- Required meta tags -->
-  
+
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>REGISTER</title>
   <!-- plugins:css -->
@@ -13,7 +16,7 @@
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<script type="text/javascript" src="jscss/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="jscss/jquery-3.3.1.min.js"></script>
   <link rel="stylesheet" href="./register_files/style.css">
   <!-- endinject -->
   <!--<link rel="shortcut icon" href="https://demo.bootstrapdash.com/majestic-free/template/images/favicon.png">-->
@@ -40,7 +43,8 @@
                         <i class="fas fa-user text-primary"></i>
                       </span>
                     </div>
-                    <input type="text" class="form-control form-control-lg border-left-0" id='fullname' name='fullname' placeholder="Username">
+                    <input type="text" class="form-control form-control-lg border-left-0" id='fullname' name='fullname'
+                      placeholder="Username">
                   </div>
                 </div>
                 <div class="form-group">
@@ -51,7 +55,8 @@
                         <i class="fas fa-user text-primary"></i>
                       </span>
                     </div>
-                    <input type="text" class="form-control form-control-lg border-left-0" id='username' name='username' placeholder="Username">
+                    <input type="text" class="form-control form-control-lg border-left-0" id='username' name='username'
+                      placeholder="Username">
                   </div>
                 </div>
                 <div class="form-group">
@@ -62,10 +67,11 @@
                         <i class="fas fa-envelope text-primary"></i>
                       </span>
                     </div>
-                    <input type="email" class="form-control form-control-lg border-left-0" id='email' name='email' placeholder="Email">
+                    <input type="email" class="form-control form-control-lg border-left-0" id='email' name='email'
+                      placeholder="Email">
                   </div>
                 </div>
-                
+
                 <div class="form-group">
                   <label>Phone</label>
                   <div class="input-group">
@@ -74,10 +80,11 @@
                         <i class="fas fa-phone text-primary"></i>
                       </span>
                     </div>
-                    <input type="email" class="form-control form-control-lg border-left-0" id='phone' name='phone' placeholder="07...">
+                    <input type="email" class="form-control form-control-lg border-left-0" id='phone' name='phone'
+                      placeholder="07...">
                   </div>
                 </div>
-                
+
                 <div class="form-group">
                   <label>Password</label>
                   <div class="input-group">
@@ -86,7 +93,8 @@
                         <i class="fas fa-lock text-primary"></i>
                       </span>
                     </div>
-                    <input type="password" class="form-control form-control-lg border-left-0" id="password" name="password" placeholder="Password">                        
+                    <input type="password" class="form-control form-control-lg border-left-0" id="password"
+                      name="password" placeholder="Password">
                   </div>
                 </div>
                 <div class="form-group">
@@ -97,7 +105,8 @@
                         <i class="fas fa-lock text-primary"></i>
                       </span>
                     </div>
-                    <input type="password" class="form-control form-control-lg border-left-0" id="password-confirm" name='password-confirm' placeholder="Password">                        
+                    <input type="password" class="form-control form-control-lg border-left-0" id="password-confirm"
+                      name='password-confirm' placeholder="Password">
                   </div>
                 </div>
                 <div class="mb-4">
@@ -105,50 +114,51 @@
                     <label class="form-check-label text-muted">
                       <input type="checkbox" class="form-check-input">
                       I agree to all Terms &amp; Conditions
-                    <i class="input-helper"></i></label>
+                      <i class="input-helper"></i></label>
                   </div>
                 </div>
                 <div class="mt-3">
-                  <button class="btn btn-block btn-primary btn-lg font-weight-medium submit" type="button">SIGN UP</button>
+                  <button class="btn btn-block btn-primary btn-lg font-weight-medium submit" type="button">SIGN
+                    UP</button>
                 </div>
                 <div class="text-center mt-4 font-weight-light">
                   Already have an account? <a href="index.php" class="text-primary">Login</a>
                 </div>
               </form>
               <script>
-                  $('.submit').click(function(){
-                      console.log('clicked');
-                      var username = $('#username').val();  
-                      var password = $('#password').val(); 
-            		  var passwordconfirm = $('#password-confirm').val(); 
-            		  var fullname = $('#fullname').val();
-            		  var phone = $('#phone').val();
-            		  var email = $('#email').val();
-            		  
-            		  if(username == '' || fullname == ''|| password== '' || (password!==passwordconfirm)||email =='')  
-                       {  
-                            $('#response').html('<span class="text-danger">All Fields are required</span>');  
-                       }else{  
-            				$('#response').html('<span class="text-info">Loading response...</span>');  
-            				   $.post('register.php',{
-            					   username:username, password:password,fullname:fullname,phone:phone,email:email,
-            				   },function(data){
-            						$('form').trigger("reset");  
-            									  $('#response').fadeIn().html(data); 
-            										console.log(data);
-            									  setTimeout(function(){  
-            										   $('#response').fadeOut("slow");  
-            									  }, 5000); 
-            				   });
-                         
-                       }  
-                  })
-                  
+                $('.submit').click(function () {
+                  console.log('clicked');
+                  var username = $('#username').val();
+                  var password = $('#password').val();
+                  var passwordconfirm = $('#password-confirm').val();
+                  var fullname = $('#fullname').val();
+                  var phone = $('#phone').val();
+                  var email = $('#email').val();
+
+                  if (username == '' || fullname == '' || password == '' || (password !== passwordconfirm) || email == '') {
+                    $('#response').html('<span class="text-danger">All Fields are required</span>');
+                  } else {
+                    $('#response').html('<span class="text-info">Loading response...</span>');
+                    $.post('register.php', {
+                      username: username, password: password, fullname: fullname, phone: phone, email: email,
+                    }, function (data) {
+                      $('form').trigger("reset");
+                      $('#response').fadeIn().html(data);
+                      console.log(data);
+                      setTimeout(function () {
+                        $('#response').fadeOut("slow");
+                      }, 5000);
+                    });
+
+                  }
+                })
+
               </script>
             </div>
           </div>
           <div class="col-lg-6 register-half-bg d-flex flex-row">
-            <p class="text-white font-weight-medium text-center flex-grow align-self-end">Copyright © 2020  All rights reserved.</p>
+            <p class="text-white font-weight-medium text-center flex-grow align-self-end">Copyright © 2020 All rights
+              reserved.</p>
           </div>
         </div>
       </div>
@@ -157,6 +167,37 @@
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
+
+  <!-- MODALS -->
+  <!-- sucess message modal and button -->
+  <button type="button" class="d-none successButton" data-bs-toggle="modal" data-bs-target="#success_tic">Open
+    Modal</button>
+
+  <!-- Modal -->
+  <div id="success_tic" class="modal fade" tabindex="-1" aria-labelledby="showSuccessMessage" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-xm">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <a class="close" href="#" data-dismiss="modal">&times;</a>
+        <div class="page-body">
+          <div class="head">
+            <h3 style="margin-top:5px;" class="sucesssMessage"></h3>
+            <!-- <h4>Lorem ipsum dolor sit amet</h4> -->
+          </div>
+
+          <h1 style="text-align:center;">
+            <div class="checkmark-circle">
+              <div class="background"></div>
+              <div class="checkmark draw"></div>
+            </div>
+            <h1>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
   <!-- plugins:js -->
   <script src="./register_files/vendor.bundle.base.js.download"></script>
   <!-- endinject -->
@@ -168,4 +209,6 @@
 
 
 
-</body></html>
+</body>
+
+</html>
