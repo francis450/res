@@ -2,9 +2,12 @@
 session_start();
 include('../connection.php');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order']) && isset($_POST['server'])) {
     $order = $_POST['order'];
     $department = $_POST['department'];
+    $server = $_POST['server'];
+    $table = $_POST['table'];
+    $status = 'pending';
     // Decode the JSON string
     $foodItems = json_decode($order, true);
     $currentDateTime = new DateTime();
@@ -20,12 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order'])) {
             $quantity = $item['quantity'];
             $price = $item['price'];
 
-            $query = "INSERT INTO `orders`(`orderid`,`department`, `foodcode`, `food`, `price`, `qnty`) 
-                    VALUES ('$orderid','$department','$foodcode','$name','$price','$quantity')";
+            $query = "INSERT INTO `orders`(`orderid`,`department`, `foodcode`, `food`, `price`, `qnty`, `server`,`table`,`status`) 
+                    VALUES ('$orderid','$department','$foodcode','$name','$price','$quantity','$server','$table','$status')";
             if (!mysqli_query($con, $query)) {
                 echo "Error Saving Order Item";
             } else {
                 file_put_contents('streaming.txt', 'start');
+                echo true;
             }
         }
     } else {
@@ -34,8 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order'])) {
     }
 }
 
-function fetchOrders($con)
-{
+function fetchOrders($con) {
     $query = "SELECT `orderid`,department GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total` FROM `orders` GROUP BY `orderid`";
     $ordersData = array();
 
@@ -64,8 +67,7 @@ function fetchOrders($con)
     }
 }
 
-function sendServerEvent($con)
-{
+function sendServerEvent($con) {
     header("Cache-Control: no-store");
     header("Content-Type: text/event-stream");
     header('Connection: keep-alive');

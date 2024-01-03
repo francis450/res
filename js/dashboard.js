@@ -5,6 +5,15 @@ $(document).ready(function(){
     $('#optionsDiv').toggle();
   });
 
+  $('#timeout').DataTable({
+    columns: [
+      { title: 'OrderId' },
+      { title: 'Description'},
+      { title: 'Total'},
+      { title: 'Server' },
+      { title: 'Date'}
+    ]
+  });
   // Handle click event on the document to hide the optionsDiv when clicking outside
   $(document).click(function(event) { 
     if(!$(event.target).closest('#optionsButton').length && !$(event.target).is('#optionsButton')) {

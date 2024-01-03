@@ -3,6 +3,8 @@ $(document).ready(function () {
         columns: [
             { title: 'OrderId' },
             { title: 'Department' },
+            { title: 'Table' },
+            { title: 'Waiter' },
             { title: 'Items' },
             { title: 'Total' },
             { title: 'Time' },
@@ -85,7 +87,16 @@ $(document).ready(function () {
             alert('REASON FOR CANCELLING ORDER CANNOT BE NULL');
         }
     });
+
 })
+
+$(document).ready(function(){
+    if($('#pay').parent().css('width','250px')){
+        console.log($('#pay').parent().css('width'));
+    }else{
+        console.log('Not Done');w
+    }
+});
 
 function openPaymentModal(orderId, total) {
     let inputs = document.querySelectorAll('input');
@@ -125,16 +136,19 @@ function populateOrders() {
 
 function getOrders(data) {
     $('#orders').DataTable().clear().draw();
-
+    let table = '';
+    let waiter = '';
     // Populate data into the DataTable
     for (var i = 0; i < data.length; i++) {
         $('#orders').DataTable().row.add([
             data[i].orderid,
             data[i].department,
+            table,
+            waiter,
             data[i].foods,
             data[i].total,
             data[i].date,
-            '<button class="btn btn-primary" onclick="openPaymentModal(\'' + data[i].orderid + '\', ' + parseFloat(data[i].total) + ')">Pay</button>&nbsp<button class="btn btn-danger" onclick="confirmDeleteOrder(\'' + data[i].orderid + '\')" >X Cancel</button><button onclick="showOrder(\'' + data[i].orderid + '\')" class="btn btn-info mt-1">&#x1F441; VIew Order</button>'
+            '<button id="pay" class="btn btn-primary btn-sm" onclick="openPaymentModal(\'' + data[i].orderid + '\', ' + parseFloat(data[i].total) + ')">Pay</button>&nbsp<button class="btn btn-danger btn-sm mr-1" onclick="confirmDeleteOrder(\'' + data[i].orderid + '\')" >X Cancel</button><button onclick="showOrder(\'' + data[i].orderid + '\')" class="btn btn-info btn-sm">&#x1F441; Order</button>'
         ]).draw();
     }
 }

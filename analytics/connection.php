@@ -2,7 +2,7 @@
 date_default_timezone_set('Africa/Nairobi');
 $user='root';
 $password="";
-$db = 'hotel';
+$db = 'infodata_hotel';
 
 $host='localhost';
 $con = mysqli_connect("$host","$user","$password","$db");

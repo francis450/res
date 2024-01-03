@@ -1,7 +1,7 @@
 <?php
 session_start();
 include('connection.php');
-if (!isset($_SESSION['username']) && isset($_SESSION['department'])) {
+if (!isset($_SESSION['username']) && !isset($_SESSION['department'])) {
     header('index.php');
 } else {
     $username = $_SESSION['username'];
@@ -15,8 +15,8 @@ if (!isset($_SESSION['username']) && isset($_SESSION['department'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- JQuery -->
-    <!--<script src="jquery-3.3.1.min.js"></script>-->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
     <!-- bootstrap -->
     <!--<link rel="stylesheet" href="bs/bootstrap.min.css">-->
@@ -92,8 +92,8 @@ if (!isset($_SESSION['username']) && isset($_SESSION['department'])) {
                     <div class="card-header" style="margin-left:40px">
                         <button class="btn btn-info clear" onClick="cleari()">&#x1F9F9;CLEAR LIST</button>
                         <button class="btn btn-dark btn-outline" id="removeButton">REMOVE ITEM</button>
-                        <button class="btn btn-secondary printorder">PRINT ORDER</button>
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal">ORDERS</button>
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal">MY ORDERS</button>
+                        <!-- <button class="btn btn-secondary printorder">PRINT ORDER</button> -->
                     </div>
                 </div>
             </div>
@@ -102,9 +102,9 @@ if (!isset($_SESSION['username']) && isset($_SESSION['department'])) {
                     <table id="cart" class="table table-stripe table-hover">
 
                     </table>
-                    <button class="btn btn-danger col-12">
-                        <!-- <span>Confirm Order For</span> -->
-                        <span>Total: </span>
+                    <button class="btn btn-danger col-12 printorder">
+                        <span>Complete Order For</span>
+                        <span>: </span>
                         <span class="total"></span>
                         <span> Kshs.</span>
                     </button>
@@ -131,7 +131,7 @@ if (!isset($_SESSION['username']) && isset($_SESSION['department'])) {
                             echo '<div class="card-header"><h6>' . $div['category'] . '<h6></div>';
                             echo '<div class="card-body col-12" style="display: flex;gap: 5px;">';
                             $catt = $div['category'];
-                            $catquer = mysqli_query($con, "SELECT * FROM menu where category = '$catt'");
+                            $catquer = mysqli_query($con, "SELECT * FROM menu where category = '$catt' AND department = '$department'");
                             while ($divv = mysqli_fetch_array($catquer)) {
                                 echo '<button class="btn btn-warning col-3 item" onclick="add(\'' . $divv['foodcode'] . '\',\'' . $divv['food'] . '\',' . $divv['price'] . ')">' . $divv['food'] . '<br>Kshs. ' . $divv['price'] . '</button>';
                             }
@@ -165,6 +165,9 @@ if (!isset($_SESSION['username']) && isset($_SESSION['department'])) {
                 </div>
             </div>
         </div>
+        <!-- MODALS -->
+
+        <!-- MODAL BUTTON -->
         <button class="btn btn-primary d-none paymentModal" data-bs-target="#paymentModal" data-bs-toggle="modal" data-bs-dismiss="modal">button</button>
         <!-- PAYMENT DETAILS MODAL -->
         <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
@@ -242,356 +245,52 @@ if (!isset($_SESSION['username']) && isset($_SESSION['department'])) {
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        function cleari() {
-            cart.length = 0;
-            updateCartInLocalStorage();
-            updateDataTable();
-            updateTotal();
-        }
 
-        function getItems(evt, cityName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
+        <!-- TABLE MODAL -->
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary tableModal d-none" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        </button>
+        <p class="d-none department"><?php echo $department; ?></p>
+        <p class="d-none username"><?php echo $username; ?></p>
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header card-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">CHOOSE TABLE TO SEND ORDER</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body card-body">
+                        <h5>TABLE: <span class="chosenTable mb-0"></span></h5>
 
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-
-            document.getElementById(cityName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-        const dataTable = $('#cart').DataTable({
-            columns: [{
-                    title: ''
-                },
-                {
-                    title: 'Item'
-                },
-                {
-                    title: 'Quantity'
-                },
-                {
-                    title: 'Price'
-                },
-                {
-                    title: 'Total'
-                },
-            ],
-        });
-        const orders = $('#orders').DataTable({
-            columns: [{
-                    title: 'OrderId'
-                },
-                {
-                    title: 'Items'
-                },
-                {
-                    title: 'Total'
-                },
-                {
-                    title: 'Action'
-                },
-            ]
-        });
-
-        function populateOrders() {
-            $.ajax({
-                url: 'handlers/getOrders.php',
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    // Assuming the data is an array of objects with properties like OrderId, Items, Total
-
-                    // Clear existing rows in the DataTable
-                    $('#orders').DataTable().clear().draw();
-
-                    // Populate data into the DataTable
-                    for (var i = 0; i < data.length; i++) {
-                        $('#orders').DataTable().row.add([
-                            data[i].orderid,
-                            data[i].foods,
-                            data[i].total,
-                            '<button class="btn btn-primary" onclick="openPaymentModal(\'' + data[i].orderid + '\', ' + parseFloat(data[i].total) + ')">Pay</button>'
-                        ]).draw();
-                    }
-                },
-                error: function(error) {
-                    console.error('Error fetching data:', error);
-                }
-            });
-        }
-
-        function openPaymentModal(orderId, total) {
-            $.ajax({
-                url: 'handlers/payment_details.php',
-                method: 'GET',
-                data: {
-                    orderid: orderId
-                },
-                dataType: 'json',
-                success: function(paymentDetails) {
-                    // Populate modal content with payment details
-                    $('#orderIdPlaceholder').text(orderId);
-                    $('#payable').val(total);
-                    // Add more placeholders and populate them with other payment details as needed
-
-                    // Show the Bootstrap modal
-                    $('.close-orders').click();
-                    $('.paymentModal').click();
-                },
-                error: function(error) {
-                    console.error('Error fetching payment details:', error);
-                }
-            });
-        }
-        const cart = [];
-        const cartProxy = new Proxy(cart, {
-            set: function(target, property, value) {
-                // Intercept array changes here
-                if (property === 'length') {
-                    // Handle array length changes (e.g., push, splice)
-                    updateDataTable();
-                } else if (property === 'push' && Array.isArray(value)) {
-                    // Handle push with an array (used for batch adding items)
-                    value.forEach(item => addToCart(item));
-                } else if (property === 'remove') {
-                    const itemIndex = target.findIndex(item => item.name === value);
-                    if (itemIndex !== -1) {
-                        target.splice(itemIndex, 1);
-                    }
-
-                    // Update cart data in localStorage
-                    updateCartInLocalStorage();
-
-                    updateDataTable();
-                    updateTotal();
-                } else {
-                    // Handle item updates (e.g., cart[index] = newItem)
-                    const itemIndex = target.findIndex(item => item.name === property);
-                    if (itemIndex !== -1) {
-                        // Item already exists, increase its quantity by 1
-                        target[itemIndex].quantity += 1;
-                    } else {
-                        target.push(value);
-                    }
-                    updateCartInLocalStorage();
-
-                    updateDataTable();
-                    updateTotal();
-                }
-                return true;
-            },
-        });
-
-        function updateCartInLocalStorage() {
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-        $(document).ready(function() {
-            initializeCartFromLocalStorage();
-            populateOrders();
-
-            $('.paymentbtn').click(function() {
-                var payable = $('#payable').val();
-                var transtype = $(this).text();
-                var amtgiven = prompt("Enter Amount Given");
-                if (amtgiven !== null && amtgiven !== '') {
-                    $('#amountgiven').val(amtgiven);
-                    $('#transtype').val(transtype);
-                    $('.bakii').val(amtgiven - payable);
-                    if ($('.bakii').val() >= 0 && payable > 0) {
-                        $('.sellbtn').show();
-                    } else {
-                        $('.sellbtn').hide();
-                    }
-                } else {
-                    alert("Amount Cannot Be Empty");
-                }
-            });
-        });
-
-        function initializeCartFromLocalStorage() {
-            const storedCart = localStorage.getItem('cart');
-            if (storedCart) {
-                const parsedCart = JSON.parse(storedCart);
-                parsedCart.forEach(item => addToCart(item, false));
-                updateDataTable(); // Update UI after adding all items
-                updateTotal();
-            }
-        }
-
-        function updateDataTable() {
-            // Clear the DataTable
-            dataTable.clear();
-
-            // Populate the DataTable with the updated cart data
-            cartProxy.forEach(item => {
-                const {
-                    name,
-                    quantity,
-                    price
-                } = item;
-                const checkbox = $('<input>').prop({
-                    type: 'checkbox',
-                    id: name, // Unique ID for each checkbox
-                    name: name, // Unique name for each checkbox
-                    checked: false // You can set it based on some condition
-                });
-
-                const total = quantity * price;
-                dataTable.row.add([checkbox[0].outerHTML, name, quantity, price, total]);
-            });
-
-            // Redraw the DataTable
-            dataTable.draw();
-        }
-
-        function updateTotal() {
-            let total = 0;
-            cartProxy.forEach(item => {
-                let additional = item.quantity * item.price;
-                total += additional;
-            });
-            $('.total').html(total);
-        }
-
-        function addToCart(item, updateUI = true) {
-            // Check if the item already exists in the cart
-            const existingItem = cartProxy.find(cartItem => cartItem.name === item.name);
-            if (existingItem) {
-                // Item exists, increase its quantity by 1
-                existingItem.quantity += 1;
-            } else {
-                // Item does not exist, add it to the cart
-                cartProxy.push(item);
-            }
-
-            // Update cart data in localStorage if required
-            if (updateUI) {
-                updateCartInLocalStorage();
-                updateDataTable();
-                updateTotal();
-            }
-        }
-
-        function add(foodcode, food, price,) {
-            addToCart({
-                foodcode: foodcode,
-                name: food,
-                quantity: 1,
-                price: price
-            });
-        }
-
-        function removeItemFromCart(itemName) {
-            const itemIndex = cart.findIndex(item => item.name === itemName);
-            if (itemIndex !== -1) {
-                cart.splice(itemIndex, 1);
-                return true; // Item removed successfully
-            }
-            return false; // Item not found in the cart
-        }
-
-        function removeSelectedItems() {
-            // Get all the checked checkboxes within the table
-            var checkedCheckboxes = $('#cart input[type="checkbox"]:checked');
-
-            // Check if there are any checked checkboxes
-            if (checkedCheckboxes.length > 0) {
-                // Iterate over the checked checkboxes and remove corresponding items from the cart
-                checkedCheckboxes.each(function() {
-                    var itemName = $(this).attr('name'); // Assuming you store the item name as a data attribute
-                    var removed = removeItemFromCart(itemName); // Remove the item from the cart
-                    if (removed) {
-                        // Update the data table, total, and possibly localStorage
-                        updateDataTable();
-                        updateTotal();
-                        updateCartInLocalStorage(); // If needed
-                    }
-                });
-            } else {
-                // No checkboxes are checked, you can show a message or take other actions
-                alert('No items selected for removal.');
-            }
-        }
-        $('#removeButton').on('click', removeSelectedItems);
-
-        function saveOrder(cartData) {
-            $.post('handlers/saveOrder.php', {
-                order: cartData,
-                department: '<?php echo $department; ?>'
-            }, function(response) {
-                if (response) {
-
-                }
-            })
-        }
-
-        function generateAndPrintPDF() {
-            var cartData = JSON.parse(localStorage.getItem('cart'));
-            saveOrder(localStorage.getItem('cart'));
-            cleari();
-            var subtotal = $('.total').text();
-            cartData.forEach(function(item, index) {
-                item.rowNumber = index + 1;
-                item.total = (item.price * item.quantity).toFixed(2);
-            });
-            if (cartData && Array.isArray(cartData) && cartData.length > 0) {
-                // Define the custom page size in inches (2.9 inches width)
-                var pageSizeInches = {
-                    width: 2.9 * 72,
-                    height: 'auto'
-                };
-                cartData.push({
-                    rowNumber: '',
-                    name: 'Subtotal',
-                    quantity: '',
-                    price: '',
-                    total: subtotal
-                });
-                var docDefinition = {
-                    pageOrientation: 'portrait',
-                    pageSize: pageSizeInches,
-                    pageMargins: [5, 5, 5, 0],
-                    content: [{
-                            text: 'ORDER',
-                            style: 'header',
-                            alignment: 'center',
-                            fontSize: 9
-                        },
-                        {
-                            layout: 'headerLineOnly',
-                            table: {
-                                headerRows: 1,
-                                widths: ['auto', 'auto', 'auto', 'auto', 'auto'],
-                                body: [
-                                    ['#', 'Item', 'Qnty', 'Price', 'Total'],
-                                    ...cartData.map(item => [item.rowNumber, item.name, item.quantity, item.price, item.total])
-                                ]
+                        <?php
+                            $deptQuery = mysqli_query($con, "SELECT DISTINCT(department) as department FROM tables");
+                            $colors = array('warning', 'success', 'info', 'secondary', 'dark');
+                            $counter = 0;
+                            while ($depts = mysqli_fetch_assoc($deptQuery)) {
+                                echo '<div style="font-weight:bold;margin-top:20px;">'.$depts['department'].'</div><hr style="margin-top:0;">';
+                                $thisDept = $depts['department'];
+                                $tablesQ = mysqli_query($con, "SELECT * FROM tables WHERE department = '$thisDept'");
+                                while($tables = mysqli_fetch_assoc($tablesQ)){
+                                    $tableId = $tables['id'];
+                                    echo '<button onclick="choosenTable(\''.$tableId.'\',\''.$thisDept.'\',\''.$tables['table'].'\')" class="btn btn-'.$colors[$counter].' btn-lg me-1">'.$tables['table'].'</button>';
+                                    // echo '<button onclick="choosenTable('.$tableId.','.$thisDept.','.$tables['table'].')" class="btn btn-'.$colors[$counter].' btn-lg me-1">'.$tables['table'].'</button>';
+                                }
+                                echo '<br>';
+                                $counter++;
                             }
-                        }
-                    ],
-                    styles: {
-                        header: {
-                            fontSize: 7,
-                            bold: true
-                        }
-                    }
-                };
+                        ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary sendorder">send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                var pdfDoc = pdfMake.createPdf(docDefinition);
-                pdfDoc.print({}, window);
-            } else {
-                alert('Cart is empty. Add items to the cart before generating a receipt.');
-            }
-        }
-        $('.printorder').click(generateAndPrintPDF);
-    </script>
 </body>
+<script src="js/sell.js"></script>
 
 </html>

@@ -10,9 +10,9 @@ include('connection.php');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--<script src='jquery-3.3.1.min.js'></script>-->
-    <!--<link rel="stylesheet" href="bs/bootstrap.min.css">-->
-    <!--<script src="bs/bootstrap.min.js"></script>-->
+    <!-- <script src='jquery-3.3.1.min.js'></script> -->
+    <!-- <link rel="stylesheet" href="bs/bootstrap.min.css"> -->
+    <!-- <script src="bs/bootstrap.min.js"></script> -->
 
 
     <!-- jQuery (required for Bootstrap JavaScript) -->
@@ -62,7 +62,7 @@ include('connection.php');
     <div class="content-wrapper">
         <div class="row m-4">
             <div class="col-12">
-                <div class="card">
+                <div class="card d-none">
                     <div class="card-header" data-toggle="collapse" data-target="#collapse11">
                         <h4>FOOD COSTING</h4>
                     </div>
@@ -98,7 +98,7 @@ include('connection.php');
                                 <input type="number" style="width: 100px" id="foodcode" name="foodcode">
 
                                 <!-- Category -->
-                                <label for="foodcategory">FOOD ITEM CATEGORY:</label>
+                                <label for="foodcategory">FOOD I TEM CATEGORY:</label>
                                 <select name="foodcategory" id="foodcategory">
                                     <option>select</option>
                                     <option value="SNACKS">SNACKS</option>
@@ -135,10 +135,11 @@ include('connection.php');
 
                                 <!-- Action -->
                                 <button class="btn-xs btn-warning btn-outline sendingr" style="border: none; margin: 5px" type="submit">ADD</button>
-                                </div>
+                            </div>
 
                             <script>
                                 $(document).ready(function() {
+                                    $('.card-header').click();
                                     $('#fooditemSelect').change(function() {
                                         let foodfor = $(this).val();
                                         $.post('adding.php', {
@@ -162,7 +163,7 @@ include('connection.php');
                                         var measure = $('#ingredientmeasure').val();
                                         var category = $('#foodcategory').val();
 
-                                        console.log('department'+department,'thiscoded', thiscoded, 'food', food, 'thisingredient', thisingredient, 'thisunit', thisunit, 'measure', measure, 'category', category);
+                                        console.log('department' + department, 'thiscoded', thiscoded, 'food', food, 'thisingredient', thisingredient, 'thisunit', thisunit, 'measure', measure, 'category', category);
                                         $.post("register.php", {
                                             department: department,
                                             thiscoded: thiscoded,
@@ -193,11 +194,12 @@ include('connection.php');
         <div class="row m-4">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header" data-toggle="collapse" data-target="#collapse12">
-                        <h4>FOOD ITEMS</h4>
+                    <div class="card-header d-flex" style="justify-content: space-between;">
+                        <h4>MENU ITEMS</h4>
+                        <button class="btn btn-primary">ADD ITEMS</button>
                     </div>
 
-                    <div class="card-body collapse" id="collapse12">
+                    <div class="card-body " id="collapse12">
                         <div class="table-responsive">
                             <script>
                                 /* Formatting function for row details - modify as you need */
@@ -376,27 +378,27 @@ include('connection.php');
             var foodform;
 
             var modalHTML = `
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Editing ${name}'s Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form id="foodForm">
-                    
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="getEditData()">Save changes</button>
-              </div>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Editing ${name}'s Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="foodForm">
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="getEditData()">Save changes</button>
+                </div>
+                </div>
             </div>
-          </div>
-        </div>`;
+            </div>`;
             $.post('getingredients.php', {
                 foodcoding: foodcoding
             }, function(data) {
