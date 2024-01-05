@@ -26,9 +26,9 @@ if(isset($_POST['editedData'])){
     }else{
         $success[] = $foodName." Updated Successfully";
     }
-    $c = $data.length;
+    $c = count($data);
     // Access the different objects
-    for($i=0; $i < $data.length; $i++){
+    for($i=0; $i < count($data); $i++){
         $ingredientObject = $data[$i];
         $ingredientName = $ingredientObject['ingredient'];
         $units = $ingredientObject['units'];
@@ -44,12 +44,12 @@ if(isset($_POST['editedData'])){
             $success[] = $ingredientName." Updated Successfully";
         }
     }
-    if($err.length > 0){
-        for($i = 0; $i < $err.length; $i++){
+    if(count($err) > 0){
+        for($i = 0; $i < count($err); $i++){
             echo $err[$i];
         }
     }else{
-        for($i = 0; $i < $success.length; $i++){
+        for($i = 0; $i < count($success); $i++){
             echo $success[$i];
         }
     }
@@ -78,18 +78,18 @@ if(isset($_POST['foodcoding'])){
     $data[] = $menu;
     
     // Fetch and format the data
-    while ($row = mysqli_fetch_assoc($result)) {
-        $entry = array(
+    // while ($row = mysqli_fetch_assoc($result)) {
+    //     $entry = array(
             
-            "ingredient" => $row['ingredient'],
-            "units" => $row['units'],
-            "measure" => $row['measure'],
-            "cost" => $row['cost'],
-        );
+    //         "ingredient" => $row['ingredient'],
+    //         "units" => $row['units'],
+    //         "measure" => $row['measure'],
+    //         "cost" => $row['cost'],
+    //     );
     
-        // Add the formatted entry to the data array
-        $data[] = $entry;
-    }
+    //     // Add the formatted entry to the data array
+    //     $data[] = $entry;
+    // }
     
     // Encode the data array as JSON
     $jsonData = json_encode($data, JSON_PRETTY_PRINT);

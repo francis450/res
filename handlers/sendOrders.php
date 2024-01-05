@@ -3,7 +3,10 @@ session_start();
 include('../connection.php');
 function fetchOrders($con)
 {
-    $query = "SELECT `orderid`,`department`, GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total`, orderedAt as `date` FROM `orders` GROUP BY `orderid` ORDER BY date DESC";
+    // $query = "SELECT `orderid`,`department`, GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total`, orderedAt as `date` FROM `orders` GROUP BY `orderid` ORDER BY date DESC";
+    // $query = "SELECT `orderid`, `table`, `server`, `department`, GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total`, orderedAt as `date` FROM `orders` WHERE `status` = 'pending'  GROUP BY `orderid` ORDER BY orderid DESC";
+    $query = "SELECT `orderid`, `table`, `server`, `department`, GROUP_CONCAT(`food` SEPARATOR ', ') as `foods`, SUM(`price` * `qnty`) as `total`, orderedAt as `date` FROM `orders` WHERE `status` = 'pending' AND DATE(orderedAt) = 'CURDATE()' GROUP BY `orderid` ORDER BY orderid DESC";
+    
     $ordersData = array();
 
     // Check if the query was successful

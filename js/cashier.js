@@ -136,15 +136,13 @@ function populateOrders() {
 
 function getOrders(data) {
     $('#orders').DataTable().clear().draw();
-    let table = '';
-    let waiter = '';
     // Populate data into the DataTable
     for (var i = 0; i < data.length; i++) {
         $('#orders').DataTable().row.add([
             data[i].orderid,
             data[i].department,
-            table,
-            waiter,
+            data[i].table,
+            data[i].server,
             data[i].foods,
             data[i].total,
             data[i].date,

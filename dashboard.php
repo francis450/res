@@ -1,9 +1,9 @@
 <?php
 session_start();
 include('connection.php');
-if(isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
+if (isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
     $username = $_SESSION['username'];
-}else{
+} else {
     header('Location: index.php');
 }
 ?>
@@ -25,6 +25,7 @@ if(isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
     <script src="sources/fontawesome/js/all.min.js"></script>
 
 </head>
+
 
 <body>
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
@@ -446,7 +447,9 @@ if(isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
                             <li>
                                 <a href="dashboard.php" class="mm-active">
                                     <!-- <i class="fas fa-gauge"></i> -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.<path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm320 96c0-26.9-16.5-49.9-40-59.3V88c0-13.3-10.7-24-24-24s-24 10.7-24 24V292.7c-23.5 9.5-40 32.5-40 59.3c0 35.3 28.7 64 64 64s64-28.7 64-64zM144 176a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm-16 80a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM400 144a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.
+                                        <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm320 96c0-26.9-16.5-49.9-40-59.3V88c0-13.3-10.7-24-24-24s-24 10.7-24 24V292.7c-23.5 9.5-40 32.5-40 59.3c0 35.3 28.7 64 64 64s64-28.7 64-64zM144 176a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm-16 80a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM400 144a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
+                                    </svg>
                                     DASHBOARD
                                 </a>
                             </li>
@@ -482,7 +485,7 @@ if(isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
                                     ORDERS REPORTS
                                 </a>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </div>
@@ -493,23 +496,23 @@ if(isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
                         <div class="page-title-wrapper">
                             <div class="page-title-heading">
                                 <div class="page-title-icon">
-                                    
+
                                 </div>
                                 <div>
                                     <?php
-                                        $ufnq = mysqli_query($con, "SELECT fullname FROM users WHERE username = '$username'");
-                                        $fetchname = mysqli_fetch_array($ufnq);
-                                        echo $fetchname['fullname'];
+                                    $ufnq = mysqli_query($con, "SELECT fullname FROM users WHERE username = '$username'");
+                                    $fetchname = mysqli_fetch_array($ufnq);
+                                    echo $fetchname['fullname'];
                                     ?>
                                     <div class="page-title-subheading">Welcome back to the dashboard, you are now in charge.
                                     </div>
                                 </div>
                             </div>
                             <div class="page-title-actions">
-                                <button type="button" data-toggle="tooltip" title="SEE CASHIERS VIEW" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
+                                <button type="button" onclick="toDestination('cashier.php')" data-toggle="tooltip" title="SEE CASHIERS VIEW" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
                                     <i class="fa fa-cash-register"></i> CASHIER
                                 </button>
-                                <button type="button" data-toggle="tooltip" title="SEE WAITERS VIEW" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
+                                <button type="button" onclick="toDestination('sell.php')" data-toggle="tooltip" title="SEE WAITERS VIEW" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
                                     <i class="fa fa-external-link"></i> POS
                                 </button>
                                 <div class="d-inline-block dropdown">
@@ -570,10 +573,10 @@ if(isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
                                         <div class="widget-subheading">Sum of Orders Made Today</div>
                                     </div>
                                     <div class="widget-content-right">
-                                        <?php 
-                                            $nodq = mysqli_query($con, "SELECT DISTINCT(orderid) FROM orders WHERE status = 'pending' AND DATE(orderedAt) = CURDATE()");
-                                            $nod = mysqli_num_rows($nodq);
-                                            
+                                        <?php
+                                        $nodq = mysqli_query($con, "SELECT DISTINCT(orderid) FROM orders WHERE status = 'pending' AND DATE(orderedAt) = CURDATE()");
+                                        $nod = mysqli_num_rows($nodq);
+
                                         ?>
                                         <div class="widget-numbers text-white"><span><?php echo $nod; ?></span></div>
                                     </div>
@@ -589,8 +592,8 @@ if(isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
                                     </div>
                                     <div class="widget-content-right">
                                         <?php
-                                            $nopoq = mysqli_query($con, "SELECT DISTINCT(orderid) FROM orders WHERE status = 'paid' AND DATE(orderedAt) = CURDATE()");
-                                            $nopo = mysqli_num_rows($nopoq);
+                                        $nopoq = mysqli_query($con, "SELECT DISTINCT(orderid) FROM orders WHERE status = 'paid' AND DATE(orderedAt) = CURDATE()");
+                                        $nopo = mysqli_num_rows($nopoq);
                                         ?>
                                         <div class="widget-numbers text-white"><span><?php echo $nopo; ?></span></div>
                                     </div>
@@ -605,10 +608,10 @@ if(isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
                                         <div class="widget-subheading">Active Waiters Available Now</div>
                                     </div>
                                     <div class="widget-content-right">
-                                        <?php 
-                                            $nosq = mysqli_query($con, "SELECT * FROM users WHERE active = '1' AND userType = 'server'");
-                                            $nos = mysqli_num_rows($nosq);
-                                         ?>
+                                        <?php
+                                        $nosq = mysqli_query($con, "SELECT * FROM users WHERE active = '1' AND userType = 'server'");
+                                        $nos = mysqli_num_rows($nosq);
+                                        ?>
                                         <div class="widget-numbers text-white"><span><?php echo $nos; ?></span></div>
                                     </div>
                                 </div>
