@@ -3,9 +3,7 @@ session_start();
 include('connection.php');
 if (isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
     $username = $_SESSION['username'];
-} else {
-    header('Location: index.php');
-}
+} 
 ?>
 <!doctype html>
 <html lang="en">
