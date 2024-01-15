@@ -5,7 +5,7 @@ if (isset($_POST['username1']) && isset($_POST['password1']) && isset($_POST['de
 	$department = $_POST['department'];
 	$user =  $_POST['username1'];
 	$pass =  md5($_POST['password1']);
-	$res = mysqli_query($con, "SELECT *  FROM users WHERE username = '$user'  AND password = '$pass' AND active = '1'");
+	$res = mysqli_query($con, "SELECT *  FROM users WHERE username = '$user'  AND password = '$pass' AND status = '1'");
 
 	if (mysqli_num_rows($res) <= 0) {
 		$msg = "INCORRECT USERNAME OR PASSWORD";

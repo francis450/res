@@ -1,7 +1,11 @@
 <?php
 session_start();
 include('connection.php');
-
+if (isset($_SESSION['username']) && $_SESSION['userType'] != 'server') {
+    $username = $_SESSION['username'];
+} else {
+    header('Location: index.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +21,15 @@ include('connection.php');
     <script src="DataTables/media/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="css/cashier.css">
 </head>
+<style>
+    <?php
+        if($_SESSION['userType'] != 'cashier'){
+            echo ".mr-1{display:none;}";
+            echo "#pay{display:none}";
+            echo ".btn{display:none;,}";
+        }
+    ?>
+</style>
 
 <body>
     <div class="nav h-10">
@@ -39,12 +52,10 @@ include('connection.php');
         </div>
     </div>
 
-    <button class="btn btn-primary d-none paymentModal" data-bs-target="#paymentModal" data-bs-toggle="modal"
-        data-bs-dismiss="modal">button</button>
+    <button class="btn btn-primary d-none paymentModal" data-bs-target="#paymentModal" data-bs-toggle="modal" data-bs-dismiss="modal">button</button>
 
     <!-- PAYMENT DETAILS MODAL -->
-    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-md modal-lg">
             <div class="modal-content">
                 <div class="modal-header card-header">
@@ -70,21 +81,18 @@ include('connection.php');
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <label for="payable">Payable</label>
-                                            <input type="text" class="form-control gottotalprice" id="payable"
-                                                name="cashpayable" readonly="" required="">
+                                            <input type="text" class="form-control gottotalprice" id="payable" name="cashpayable" readonly="" required="">
                                         </div>
                                         <div class="form-group col-md-4">
                                             <input type="hidden" name="amt1given" id="amt1given">
                                             <input type="hidden" name="amt2given" id="amt2given">
                                             <input type="hidden" name="amt3given" id="amt3given">
                                             <label class="amountgiventext" for="amountgiven">Amount Paid</label>
-                                            <input type="number" class="form-control amountgiven" id="amountgiven"
-                                                readonly="" name="cashgiven" required="">
+                                            <input type="number" class="form-control amountgiven" id="amountgiven" readonly="" name="cashgiven" required="">
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="bakii">Balance</label>
-                                            <input type="text" class="form-control bakii" id="bakii" name="cashbalance"
-                                                readonly="" required="">
+                                            <input type="text" class="form-control bakii" id="bakii" name="cashbalance" readonly="" required="">
                                         </div>
                                     </div>
 
@@ -93,26 +101,21 @@ include('connection.php');
                                             <label for="transtype">Transaction type</label>
                                             <input type="hidden" name="transtype1" id="transtype1">
                                             <input type="hidden" name="transtype2" id="transtype2">
-                                            <input class="form-control transtype selectbtn" readonly="" id="transtype"
-                                                readon="" name="transtype">
+                                            <input class="form-control transtype selectbtn" readonly="" id="transtype" readon="" name="transtype">
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="discount">Discount</label>
-                                            <input type="number" class="form-control discount" id="discount"
-                                                name="discount" min="0" max="300" placeholder="Max Discount 300 allowed"
-                                                required="">
+                                            <input type="number" class="form-control discount" id="discount" name="discount" min="0" max="300" placeholder="Max Discount 300 allowed" required="">
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="transdesc"><span class="tran">Transaction
                                                     description</span></label>
-                                            <input type="text" class="form-control transdesc" id="transdesc"
-                                                name="transdesc">
+                                            <input type="text" class="form-control transdesc" id="transdesc" name="transdesc">
                                         </div>
                                     </div>
                                     <div class="row mt-2">
                                         <div class=" col-md-11">
-                                            <button type="submit" class="btn btn-lg btn-warning sellbtn"
-                                                style="display: none;">SAVE</button>
+                                            <button type="submit" class="btn btn-lg btn-warning sellbtn" style="display: none;">SAVE</button>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4" style="display: flex; align-items: end">
@@ -129,17 +132,15 @@ include('connection.php');
         </div>
     </div>
 
-    <button class="deleteModalButton d-none" data-bs-target="#deleteModal" data-bs-toggle="modal"
-        data-bs-dismiss="modal"></button>
+    <button class="deleteModalButton d-none" data-bs-target="#deleteModal" data-bs-toggle="modal" data-bs-dismiss="modal"></button>
 
     <!-- DELETE ORDER MODAL -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
         <div class="modal-dialog modal-dialog-md modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header card-header">
-                    <h5 class="modal-title" id="paymentModalLabel"><span id="cancelText">    </span>ORDER NO: <span class="orderNumber"></span><span class="viewDetails"></span></h5>
-                    <button type="button" class="btn-close closeDelete" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <h5 class="modal-title" id="paymentModalLabel"><span id="cancelText"> </span>ORDER NO: <span class="orderNumber"></span><span class="viewDetails"></span></h5>
+                    <button type="button" class="btn-close closeDelete" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <table class="table table-striped">

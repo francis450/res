@@ -1,7 +1,7 @@
 <?php
 session_start();
 include('connection.php');
-if (!isset($_SESSION['username']) && !isset($_SESSION['department'])) {
+if (!isset($_SESSION['username']) && !isset($_SESSION['department']) ) {
     header('index.php');
 } else {
     $username = $_SESSION['username'];

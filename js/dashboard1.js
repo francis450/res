@@ -16,7 +16,13 @@ $(document).ready(function () {
         console.log("ADJUSTED!!");
         $('.modal-backdrop').css("z-index", "0");
         $('.modal.show').css("z-index", "1");
-    })
-});
+    });
 
-document.querySelector('.edit').click()
+     $('.metismenu-item').on('click', function() {
+        // Remove the 'mm-active' class from all menu items
+        $('.metismenu-item').removeClass('mm-active');
+        
+        // Add the 'mm-active' class to the clicked menu item
+        $(this).addClass('mm-active');
+    });
+});

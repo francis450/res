@@ -58,8 +58,7 @@ if(isset($_POST['secondTdData'])){
         $result[] = $ingredient['measure'];
         $result[] = $ingredient['cost'];
         $results[] = $result;
-    }
-    
+    }    
     echo json_encode($results);
 }
 
@@ -91,5 +90,18 @@ if(isset($_POST['productname'])){
         }
     }else{
         mysqli_error($con);
+    }
+}
+
+if(isset($_POST['measure']) && $_POST['measure'] != ''){
+    $measure = strtoupper($_POST['measure']);
+
+    $query = "INSERT INTO `measures`(`unit`) VALUES ('$measure')";
+
+    if(mysqli_query($con, $query)){
+        $allmeasures = mysqli_query($con, "SELECT * FROM measures");
+        while($measure = mysqli_fetch_array($allmeasures)){
+            echo '<option value="' . $measure['unit'] . '">' . $measure['unit'] . '</option>';
+        }
     }
 }

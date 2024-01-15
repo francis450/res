@@ -3,40 +3,33 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include('connection.php');
-if(isset($_SESSION['username']) && $_SESSION['userType'] == 'admin'){
+if (isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
   $username = $_SESSION['username'];
-}else{
+} else {
   header('Location: index.php');
 }
 ?>
 <!DOCTYPE html>
-<!-- saved from url=(0064)https://demo.bootstrapdash.com/majestic-free/template/index.html -->
 <html lang="en">
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <!-- Required meta tags -->
 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Dashboard</title>
-  <!-- <script src="jquery-3.3.1.min.js"></script> -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
   <!-- plugins:css -->
   <link rel="stylesheet" href="./dashboard_files/materialdesignicons.min.css">
   <link rel="stylesheet" href="./dashboard_files/vendor.bundle.base.css">
   <!-- endinject -->
-  <!-- plugin css for this page -->
-  <!-- <link rel="stylesheet" href="./dashboard_files/dataTables.bootstrap4.css"> -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
   <link rel="stylesheet" href="./dashboard_files/style.css">
   <!-- endinject -->
   <!--<link rel="shortcut icon" href="https://demo.bootstrapdash.com/majestic-free/template/images/favicon.png">-->
   <link rel="stylesheet" href="css/success.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css" integrity="sha512-LX0YV/MWBEn2dwXCYgQHrpa9HJkwB+S+bnBpifSOTO1No27TqNMKYoAn6ff2FBh03THAzAiiCwQ+aPX+/Qt/Ow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="DataTables/media/css/jquery.dataTables.min.css">
-    <script src="DataTables/media/js/jquery.dataTables.min.js"></script>
+  <script src="DataTables/media/js/jquery.dataTables.min.js"></script>
   <style type="text/css">
     .content-wrapper {
       padding-top: 0;
@@ -286,9 +279,17 @@ if(isset($_SESSION['username']) && $_SESSION['userType'] == 'admin'){
                 // Add 'active' class to the clicked nav-item
                 $(this).addClass('active');
               });
+              $('.metismenu-item').on('click', function() {
+                console.log("CLICKED!!")
+                // Remove the 'mm-active' class from all menu items
+                $('.metismenu-item').removeClass('mm-active');
+
+                // Add the 'mm-active' class to the clicked menu item
+                $(this).addClass('mm-active');
+              });
             });
           </script>
-          
+
           <li class="nav-item">
             <a class="nav-link" type="button" onClick="removeContentWrapper('users.php')">
               <i class="mdi mdi-account menu-icon"></i>
@@ -570,19 +571,19 @@ if(isset($_SESSION['username']) && $_SESSION['userType'] == 'admin'){
                 <div class="card-body">
                   <p class="card-title">Total sales</p>
                   <?php
-                    $totalSalesQ = mysqli_query($con, "SELECT SUM(amount) as total from receipts");
-                    $totalSales = mysqli_fetch_array($totalSalesQ);
+                  $totalSalesQ = mysqli_query($con, "SELECT SUM(amount) as total from receipts");
+                  $totalSales = mysqli_fetch_array($totalSalesQ);
 
                   ?>
-                  <h1><?php echo 'KSHS '.$totalSales['total']; ?></h1>
+                  <h1><?php echo 'KSHS ' . $totalSales['total']; ?></h1>
                   <h4>Gross Sales Over the Past 30 Days</h4>
                   <div id="total-sales-chart-legend">
                     <ul class="dashboard-chart-legend mb-0 mt-4">
                       <?php
-                        // $deptsQ = mysqli_query($con, "SELECT DISTINCT(department) as department FROM tables");
-                        // while($departments = mysqli_fetch_array($deptsQ)){
-                        //   echo '<li><span style="background-color: rgba(47,91,191,0.77) "></span>'.$departments['department'].'</li>';
-                        // }
+                      // $deptsQ = mysqli_query($con, "SELECT DISTINCT(department) as department FROM tables");
+                      // while($departments = mysqli_fetch_array($deptsQ)){
+                      //   echo '<li><span style="background-color: rgba(47,91,191,0.77) "></span>'.$departments['department'].'</li>';
+                      // }
                       ?>
                       <!-- <li><span style="background-color: rgba(47,91,191,0.77) "></span>2019</li>
                       <li><span style="background-color: rgba(77,131,255,0.77) "></span>2018</li>

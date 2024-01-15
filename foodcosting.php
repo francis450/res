@@ -133,7 +133,7 @@ include('connection.php');
 
     <!-- ADD MENU ITEM MODAL -->
     <div class="modal fade" id="addItem" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg" style="margin-top: 80px;">
             <div class="modal-content">
                 <div class="modal-header card-header">
                     <h3 class="modal-title fs-5" id="exampleModalLabel">ADD MENU ITEM</h3>
@@ -269,13 +269,15 @@ include('connection.php');
                             </div>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
     <script src="js/foodcosting.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script src="js/dashboard1.js"></script>
+</body>
 </body>
 
 </html>

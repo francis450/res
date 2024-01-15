@@ -2,27 +2,47 @@
 session_start();
 include_once '../connection.php';
 
-if (isset($_POST['psupplier']) && isset($_POST['product']) && isset($_POST['productunits']) && isset($_POST['weight']) && isset($_POST['measure']) && isset($_POST['smallunit']) && isset($_POST['bigunit']) && isset($_POST['unitcost']) && isset($_POST['totalcost']) && isset($_POST['paid']) && isset($_POST['balance']) && isset($_POST['method'])) {
+if (
+	isset($_POST['psupplier']) &&
+	isset($_POST['product']) &&
+	isset($_POST['productunits']) &&
+	isset($_POST['weight']) &&
+	isset($_POST['measure']) &&
+	// isset($_POST['smallunit']) && 
+	// isset($_POST['bigunit']) && 
+	isset($_POST['unitcost']) &&
+	isset($_POST['totalcost']) &&
+	isset($_POST['paid']) &&
+	isset($_POST['balance']) &&
+	isset($_POST['method'])
+) {
+
 	$supplier = $_POST['psupplier'];
 	$product = $_POST['product'];
 	$units = $_POST['productunits'];
 	$weight = $_POST['weight'];
 	$measure = $_POST['measure'];
-	$smallunit = $_POST['smallunit'];
-	$bigunit = $_POST['bigunit'];
+	// $smallunit = $_POST['smallunit'];
+	// $bigunit = $_POST['bigunit'];
 	$unitcost = $_POST['unitcost'];
 	$totalcost = $_POST['totalcost'];
 	$paid = $_POST['paid'];
 	$balance = $_POST['balance'];
 	$method = $_POST['method'];
-	// 	$description =$_POST['description'];
-	// 	$comment =$_POST['comment'];
 	$ref = $_POST['ref'];
-	// 	echo "supplier->$supplier product->$product units->$units weight->$weight measure->$measure smallunit->$smallunit bigunit->$bigunit";
+
+	if ($measure == 'GRAMS' || $measure == 'MILLILITRES') {
+		$smallunit = $units * $weight;
+		$bigunit = ($units / 1000) * $weight;
+	} else if ($measure == 'KILOGRAMS' || $measure == 'LITRES') {
+		$smallunit = ($units * 1000) * $weight;
+		$bigunit = $units * $weight;
+	}
 
 	$gettable = mysqli_query($con, 'select 1 from purchases LIMIT 1');
 	if ($gettable !== FALSE) {
-		$q = "insert into purchases(receipt,supplier,product,units,weight,measure,smallunit,bigunit,unitcost,totalcost,paid,balance,method)values('$ref','$supplier','$product','$units','$weight','$measure','$smallunit','$bigunit','$unitcost','$totalcost','$paid','$balance','$method')";
+		$q = "insert into purchases(receipt,supplier,product,units,weight,measure,smallunit,bigunit,unitcost,totalcost,paid,balance,method)
+								values('$ref','$supplier','$product','$units','$weight','$measure','$smallunit','$bigunit','$unitcost','$totalcost','$paid','$balance','$method')";
 		if ($add = mysqli_query($con, $q)) {
 			$getptable = mysqli_query($con, 'select 1 from products LIMIT 1');
 			if ($getptable !== FALSE) {
@@ -30,11 +50,12 @@ if (isset($_POST['psupplier']) && isset($_POST['product']) && isset($_POST['prod
 				if (mysqli_num_rows($productexists) > 0) {
 					$updateproduct = mysqli_query($con, "update products set qnty = qnty+'$units',unitcost='$unitcost', smallunit = smallunit+'$smallunit',bigunit=bigunit+'$bigunit' where product = '$product'");
 					if ($updateproduct) {
-						echo 'Product has been updated';
-						echo $units . ' of ' . $product . ' by ' . $supplier . ' has been added';
+						echo true;
+						// echo 'Product has been updated';
+						// echo $units . ' of ' . $product . ' by ' . $supplier . ' has been added';
 					} else {
 						mysqli_error($con);
-						echo "Product Not Added";
+						echo false;
 					}
 				} else {
 					$addproducts = mysqli_query($con, "insert into products(product,qnty,unitcost,smallunit,bigunit)values('$product','$units','$unitcost','$smallunit','$bigunit')");
@@ -135,4 +156,6 @@ if (isset($_POST['psupplier']) && isset($_POST['product']) && isset($_POST['prod
 			echo mysqli_error($con);
 		}
 	}
+} else {
+	echo "something was not sent";
 }

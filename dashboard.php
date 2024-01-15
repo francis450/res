@@ -445,7 +445,7 @@ if (isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
                         <ul class="vertical-nav-menu">
                             <li class="app-sidebar__heading">PAGES</li>
                             <li>
-                                <a href="dashboard.php" class="mm-active">
+                                <a href="dashboard.php" class="metismenu-item mm-active">
                                     <!-- <i class="fas fa-gauge"></i> -->
                                     <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.
                                         <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm320 96c0-26.9-16.5-49.9-40-59.3V88c0-13.3-10.7-24-24-24s-24 10.7-24 24V292.7c-23.5 9.5-40 32.5-40 59.3c0 35.3 28.7 64 64 64s64-28.7 64-64zM144 176a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm-16 80a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM400 144a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
@@ -453,26 +453,45 @@ if (isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
                                     DASHBOARD
                                 </a>
                             </li>
+
                             <li>
-                                <a href="#" type="button" onclick="removeContentWrapper('foodcosting.php')">
+                                <a href="#" type="button" class="metismenu-item" onclick="removeContentWrapper('foodcosting.php')">
                                     <i class="fas fa-bread-slice"></i>
                                     MENU
                                 </a>
                             </li>
                             <li>
-                                <a href="#" type="button" onclick="removeContentWrapper('inventory.php')">
+                                <a type="button" class="metismenu-item" onclick="removeContentWrapper('cashier.php')">
+                                    <i class="fa fa-cash-register"></i>
+                                    ORDERS
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" type="button" class="metismenu-item" onclick="removeContentWrapper('inventory.php')">
                                     <i class="fas fa-bread-slice"></i>
                                     INVENTORY
                                 </a>
                             </li>
                             <!-- <li class="app-sidebar__heading">UI Components</li> -->
                             <li>
-                                <a href="#">
-                                    <i class="fas fa-money-bill"></i>
+                                <a type="button" class="metismenu-item" onclick="removeContentWrapper('sales2.php')">
+                                    <i class="fas fa-money-bill metismenu-icon pe-7s-display2"></i>
                                     SALES
                                 </a>
                             </li>
-                            <li class="app-sidebar__heading">REPORTS</li>
+                            <li>
+                                <a href="#" type="button" class="metismenu-item" onclick="removeContentWrapper('users.php')">
+                                    <i class="metismenu-icon pe-7s-display2 fas fa-user"></i>
+                                    USERS
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" type="button" class="metismenu-item " onClick="removeContentWrapper('settings.php')">
+                                    <i class="fas fa menu-icon"></i>
+                                    <span class="menu-title">Settings</span>
+                                </a>
+                            </li>
+                            <!-- <li class="app-sidebar__heading">REPORTS</li>
                             <li>
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-display2"></i>
@@ -481,10 +500,10 @@ if (isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
                             </li>
                             <li>
                                 <a href="#">
-                                    <i class="metismenu-icon pe-7s-display2"></i>
+                                    <i class="metismenu-icon pe-7s-display2"><img src="" alt="img"></i>
                                     ORDERS REPORTS
                                 </a>
-                            </li>
+                            </li> -->
 
                         </ul>
                     </div>
@@ -609,7 +628,7 @@ if (isset($_SESSION['username']) && $_SESSION['userType'] == 'admin') {
                                     </div>
                                     <div class="widget-content-right">
                                         <?php
-                                        $nosq = mysqli_query($con, "SELECT * FROM users WHERE active = '1' AND userType = 'server'");
+                                        $nosq = mysqli_query($con, "SELECT * FROM users WHERE status = '1' AND userType = 'server'");
                                         $nos = mysqli_num_rows($nosq);
                                         ?>
                                         <div class="widget-numbers text-white"><span><?php echo $nos; ?></span></div>

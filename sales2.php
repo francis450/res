@@ -1,5 +1,6 @@
     <!DOCTYPE html>
     <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,13 @@
         <link rel="stylesheet" href="DataTables/media/css/jquery.dataTables.min.css">
         <script src="DataTables/media/js/jquery.dataTables.min.js"></script>
     </head>
+    <style>
+        .modal-backdrop {
+            z-index: 0;
+            display: none;
+        }
+    </style>
+
     <body class="d-flex justify-content-center align-items-center bg-light p-2">
         <div class="card p-4 shadow col-12">
             <div class="card-header">
@@ -29,10 +37,13 @@
             <div class="tab-content p-3 border " id="nav-tabContent">
                 <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="row bg-light">
-                        <p class="card-title">Items Sold Today</p>
-                        <table class="table" id="today1">
+                        <h5 class="card-title">Items Sold Today</h5>
+                        <hr>
+                        <table class="table table-striped" id="today1">
                             <thead>
                                 <tr>
+                                    <th>Orderid</th>
+                                    <th>Department</th>
                                     <th>Item</th>
                                     <th>Price</th>
                                     <th>Qnty</th>
@@ -46,6 +57,8 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>Orderid</th>
+                                    <th>Department</th>
                                     <th>Item</th>
                                     <th>Price</th>
                                     <th>Qnty</th>
@@ -57,10 +70,12 @@
                         </table>
                     </div>
                     <div class="row mt-4 bg-light">
-                        <p class="card-title">Products Performance Today</p>
-                        <table class="table" id="today">
+                        <h5 class="card-title">Products Performance Today</h5>
+                        <hr>
+                        <table class="table table-striped" id="today">
                             <thead>
                                 <tr>
+                                    <th>Orderid</th>
                                     <th>Item</th>
                                     <th>Qnty</th>
                                     <th>Cost</th>
@@ -74,6 +89,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>Orderid</th>
                                     <th>Item</th>
                                     <th>Qnty</th>
                                     <th>Cost</th>
@@ -87,10 +103,13 @@
                 </div>
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <div class="row bg-light">
-                        <p class="card-title">Items Sold This Week</p>
-                        <table class="table" id="month1">
+                        <h5 class="card-title">Items Sold This Week</h5>
+                        <hr>
+                        <table class="table table-striped" id="week">
                             <thead>
                                 <tr>
+                                    <th>Orderid</th>
+                                    <th>Department</th>
                                     <th>Item</th>
                                     <th>Price</th>
                                     <th>Qnty</th>
@@ -104,6 +123,8 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>Orderid</th>
+                                    <th>Department</th>
                                     <th>Item</th>
                                     <th>Price</th>
                                     <th>Qnty</th>
@@ -116,9 +137,10 @@
                     </div>
                     <div class="row mt-4 bg-light">
                         <p class="card-title">Items Performance This Week</p>
-                        <table class="table" id="month2">
+                        <table class="table table-striped" id="week1">
                             <thead>
                                 <tr>
+                                    <th>Orderid</th>
                                     <th>Item</th>
                                     <th>Qnty</th>
                                     <th>Cost</th>
@@ -132,6 +154,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>Orderid</th>
                                     <th>Item</th>
                                     <th>Qnty</th>
                                     <th>Cost</th>
@@ -145,10 +168,13 @@
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                     <div class="row bg-light">
-                        <p class="card-title">Items Sold This Year</p>
-                        <table class="table" id="week1">
+                        <h5 class="card-title">Items Sold This Month</h5>
+                        <hr>
+                        <table class="table table-striped" id="month">
                             <thead>
                                 <tr>
+                                    <th>Orderid</th>
+                                    <th>Department</th>
                                     <th>Item</th>
                                     <th>Price</th>
                                     <th>Qnty</th>
@@ -162,6 +188,8 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>Orderid</th>
+                                    <th>Department</th>
                                     <th>Item</th>
                                     <th>Price</th>
                                     <th>Qnty</th>
@@ -173,10 +201,11 @@
                         </table>
                     </div>
                     <div class="row mt-4 bg-light">
-                        <p class="card-title">Items Performance This Year</p>
-                        <table class="table" id="week2">
+                        <p class="card-title">Items Performance This Month</p>
+                        <table class="table table-striped" id="month1">
                             <thead>
                                 <tr>
+                                    <th>Orderid</th>
                                     <th>Item</th>
                                     <th>Qnty</th>
                                     <th>Cost</th>
@@ -190,6 +219,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>Orderid</th>
                                     <th>Item</th>
                                     <th>Qnty</th>
                                     <th>Cost</th>
@@ -203,10 +233,12 @@
                 </div>
                 <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                     <div class="row bg-light">
-                        <p class="card-title">Items Sold This Year</p>
-                        <table class="table" id="year1">
+                        <h5 class="card-title">Items Sold This Year</h5>
+                        <table class="table table-striped" id="year">
                             <thead>
                                 <tr>
+                                    <th>Orderid</th>
+                                    <th>Department</th>
                                     <th>Item</th>
                                     <th>Price</th>
                                     <th>Qnty</th>
@@ -220,6 +252,8 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>Orderid</th>
+                                    <th>Department</th>
                                     <th>Item</th>
                                     <th>Price</th>
                                     <th>Qnty</th>
@@ -232,9 +266,10 @@
                     </div>
                     <div class="row mt-4 bg-light">
                         <p class="card-title">Items Performance This Year</p>
-                        <table class="table" id="year2">
+                        <table class="table table-striped" id="year2">
                             <thead>
                                 <tr>
+                                    <th>Orderid</th>
                                     <th>Item</th>
                                     <th>Qnty</th>
                                     <th>Cost</th>
@@ -248,6 +283,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>Orderid</th>
                                     <th>Item</th>
                                     <th>Qnty</th>
                                     <th>Cost</th>
@@ -260,19 +296,9 @@
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>
 
-        <script>
-            $(document).ready(function(){
-                $('#today').DataTable();
-                $('#today1').DataTable();
-                $('#week1').DataTable();
-                $('#week2').DataTable();
-                $('#month1').DataTable();
-                $('#month2').DataTable();
-                $('#year1').DataTable();
-                $('#year2').DataTable();
-            })
-        </script>
+        <script src="js/sales.js"></script>
     </body>
+
     </html>
